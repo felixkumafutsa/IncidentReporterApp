@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/drawable/button.xml" value="0.22291666666666668" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_admin.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_department.xml" value="0.203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_home.xml" value="0.20677083333333332" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_inbuilt_messages.xml" value="0.203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_incidents.xml" value="0.203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_login.xml" value="0.203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_quick_msg.xml" value="0.203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_register.xml" value="0.203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_report_incident.xml" value="0.203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_teams.xml" value="0.20677083333333332" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/incident_layout.xml" value="0.2" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/team_layout.xml" value="0.20677083333333332" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

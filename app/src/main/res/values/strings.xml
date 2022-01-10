@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">IncidentReporterApp</string>
+    <string-array name="departments_array">
+        <item>Fire</item>
+        <item>Police</item>
+        <item>MASM</item>
+    </string-array>
+
+    <string-array name="messages_array">
+        <item>I am being raped</item>
+        <item>There is fire here</item>
+        <item>There is a road accident</item>
+    </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="quick_voice_call">Quick voice call</string>
+</resources>
