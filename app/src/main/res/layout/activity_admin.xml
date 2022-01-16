@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="30dp">
+        android:paddingTop="20dp">
+
 
         <ImageView
             android:id="@+id/icon"
@@ -23,7 +24,7 @@
         <TextView
             style="@style/viewParent.headerText.NoMode"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
             android:text="Admin Dashboard"
             android:textColor="@color/colorAccent" />
 
@@ -35,39 +36,41 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/notificationCard"
+                android:id="@+id/addQuickMsgCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/notificationCard"
                 android:background="@color/cardview_light_background"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="12dp"
+                app:elevation="60dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="10dp">
 
                     <ImageButton
-                        android:id="@+id/notificationMsgBtn"
+                        android:id="@+id/addTeamBtn"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_marginStart="2dp"
+                        android:layout_marginStart="25dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="2dp"
+                        android:layout_marginEnd="25dp"
                         android:layout_marginBottom="5dp"
                         android:backgroundTint="@color/white"
                         android:clickable="true"
-                        android:src="@drawable/important_mail_35px" />
+                        android:src="@drawable/add_user_group_man_woman_35px" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="New"
+                        android:text="Add Team"
                         android:textColor="@color/black"
                         android:textSize="13dp" />
 
@@ -92,68 +95,25 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="10dp">
 
                     <ImageButton
-                        android:id="@+id/addTeamBtn"
+                        android:id="@+id/addQuickMs"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_marginStart="2dp"
+                        android:layout_marginStart="25dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginEnd="2dp"
+                        android:layout_marginEnd="25dp"
                         android:layout_marginBottom="5dp"
                         android:backgroundTint="@color/white"
                         android:clickable="true"
-                        android:src="@drawable/add_user_group_man_woman_35px" />
+                        android:src="@drawable/new_message_35px" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Teams"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/incidentsCard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/addTeamCard"
-                android:background="@color/cardview_light_background"
-                app:cardCornerRadius="12dp"
-                app:elevation="60dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-
-                    <ImageButton
-                        android:id="@+id/reportsBtn"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:layout_marginBottom="5dp"
-                        android:clickable="true"
-                        android:src="@drawable/list_35px" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Reports"
+                        android:text="Add Quick Msg "
                         android:textColor="@color/black"
                         android:textSize="13dp" />
 
@@ -167,121 +127,187 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="60dp"
             android:padding="5dp">
 
-            <GridLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:alignmentMode="alignMargins"
-                android:columnCount="2"
-                android:columnOrderPreserved="false"
-                android:rowCount="1">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card1"
-                    android:layout_width="wrap_content"
+                <GridLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="12dp"
-                    android:background="@color/cardview_light_background"
-                    app:cardCornerRadius="12dp"
-                    app:elevation="60dp">
+                    android:alignmentMode="alignMargins"
+                    android:columnCount="2"
+                    android:columnOrderPreserved="false"
+                    android:rowCount="1">
 
-                    <LinearLayout
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/incidentsCardMain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="12dp"
+                        android:background="@color/cardview_light_background"
+                        app:cardCornerRadius="12dp"
+                        app:elevation="60dp">
 
-                        <ImageButton
-                            android:id="@+id/mapView"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/white"
-                            android:clickable="true"
-                            android:src="@drawable/fire_alarm_box_80px" />
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Incidents"
-                            android:textColor="@color/black"
-                            android:textSize="13dp" />
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-                    </LinearLayout>
+                            <ImageButton
+                                android:id="@+id/incidents"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/white"
+                                android:clickable="true"
+                                android:src="@drawable/urgent_message_40px" />
 
-                </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Incidents"
+                                android:textColor="@color/black"
+                                android:textSize="13dp" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="12dp"
-                    android:background="@color/cardview_light_background"
-                    app:cardCornerRadius="12dp"
-                    app:elevation="60dp">
+                        </LinearLayout>
 
-                    <LinearLayout
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/teamsCard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="12dp"
+                        android:background="@color/cardview_light_background"
+                        app:cardCornerRadius="12dp"
+                        app:elevation="60dp">
 
-                        <ImageButton
-                            android:id="@+id/callender"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/white"
-                            android:clickable="true"
-                            android:src="@drawable/home_alarm_96px" />
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Responce Teams"
-                            android:textColor="@color/black"
-                            android:textSize="13dp" />
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-                    </LinearLayout>
+                            <ImageButton
+                                android:id="@+id/teams"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/white"
+                                android:clickable="true"
+                                android:src="@drawable/fires_40px" />
 
-                </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Responce Teams"
+                                android:textColor="@color/black"
+                                android:textSize="13dp" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardR"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="100"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="12dp"
-                    android:background="@color/cardview_light_background"
-                    app:cardCornerRadius="12dp"
-                    app:elevation="60dp">
+                        </LinearLayout>
 
-                    <Button
-                        android:id="@+id/buttonL"
-                        android:layout_width="match_parent"
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/quickMsgsCard"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Button" />
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="12dp"
+                        android:background="@color/cardview_light_background"
+                        app:cardCornerRadius="12dp"
+                        app:elevation="60dp">
 
-                </androidx.cardview.widget.CardView>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-            </GridLayout>
+                            <ImageButton
+                                android:id="@+id/quickMsg"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/white"
+                                android:clickable="true"
+                                android:src="@drawable/alarms_40px" />
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Quick msgs"
+                                android:textColor="@color/black"
+                                android:textSize="13dp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/reportCArd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:layout_margin="12dp"
+                        android:background="@color/cardview_light_background"
+                        app:cardCornerRadius="12dp"
+                        app:elevation="60dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <ImageButton
+                                android:id="@+id/reports"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:backgroundTint="@color/white"
+                                android:clickable="true"
+                                android:src="@drawable/bulleted_list_40px" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Reports"
+                                android:textColor="@color/black"
+                                android:textSize="13dp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+                </GridLayout>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonL"
+                    style="@style/loginButton"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="30dp"
+                    android:text="Logout" />
+             </LinearLayout>
         </ScrollView>
-
-
     </LinearLayout>
-
 </RelativeLayout>

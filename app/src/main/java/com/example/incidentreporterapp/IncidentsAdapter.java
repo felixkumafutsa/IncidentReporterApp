@@ -15,9 +15,10 @@ import java.util.List;
 public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.ViewHolder> {
 
     private List<IncidentsModelClass> incidentsList;
-
-    public IncidentsAdapter(List<IncidentsModelClass> incidentsList){
+    private RecyclerViewClickListener incidentListener;
+    public IncidentsAdapter(List<IncidentsModelClass> incidentsList, RecyclerViewClickListener incidentListener){
         this.incidentsList = incidentsList;
+        this.incidentListener = incidentListener;
     }
 
     @NonNull
@@ -42,8 +43,10 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
     public int getItemCount() {
         return incidentsList.size();
     }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public interface RecyclerViewClickListener{
+        void onClick(View v, int position);
+    }
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView imageView;
         private TextView textView, textView1,textView2;
 
@@ -54,6 +57,8 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
             textView1 = itemView.findViewById(R.id.latitude);
             textView2 = itemView.findViewById(R.id.longitude);
 
+            itemView.setOnClickListener(this);
+
         }
 
         public void setData(int imgResource, String description, String lat, String lon) {
@@ -61,6 +66,10 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
             textView.setText(description);
             textView1.setText(lat);
             textView2.setText(lon);
+        }
+        @Override
+        public void onClick(View v) {
+            incidentListener.onClick(v, getAdapterPosition());
         }
     }
 }

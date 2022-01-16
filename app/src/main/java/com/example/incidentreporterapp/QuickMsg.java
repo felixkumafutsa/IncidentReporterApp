@@ -25,6 +25,7 @@ import java.util.List;
 public class QuickMsg extends AppCompatActivity {
     private Spinner department;
     private Spinner message;
+    private Spinner phone;
     private Button sendPanicSituation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class QuickMsg extends AppCompatActivity {
 
         message = findViewById(R.id.messageSpiner);
         department = findViewById(R.id.departmentSpinner);
+        phone = findViewById(R.id.phoneSpinner);
         sendPanicSituation = findViewById(R.id.sendPanic);
 
 
@@ -55,20 +57,21 @@ public class QuickMsg extends AppCompatActivity {
                 R.array.messages_array, android.R.layout.simple_spinner_item);
         adapterMessage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMessage.setAdapter(adapterMessage);
-        ArrayAdapter<CharSequence> adapterMessage1 = ArrayAdapter.createFromResource(this,
-                R.array.messages_array, android.R.layout.simple_spinner_item);
-        adapterMessage1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMessage.setAdapter(adapterMessage1);
+
 
         Spinner spinnerDepartment = (Spinner) findViewById(R.id.departmentSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> adapterDepartment = ArrayAdapter.createFromResource(this,
                 R.array.departments_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDepartment.setAdapter(adapter);
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
-                R.array.departments_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDepartment.setAdapter(adapter);
+        adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDepartment.setAdapter(adapterDepartment);
+
+
+
+        Spinner spinnerPhone = (Spinner) findViewById(R.id.phoneSpinner);
+        ArrayAdapter<CharSequence> adapterPhone = ArrayAdapter.createFromResource(this,
+                R.array.phoneNumber_array, android.R.layout.simple_spinner_item);
+        adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDepartment.setAdapter(adapterPhone);
     }
 
     private void sendSms(){

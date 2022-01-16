@@ -63,7 +63,7 @@ public class Register extends AppCompatActivity {
                            userInfo.put("FullName", fullName.getText().toString());
                            userInfo.put("UserEmail", email.getText().toString());
                            userInfo.put("PhoneNumber", phone.getText().toString());
-                           userInfo.put("isUser", "1");
+                           userInfo.put("isAdmin", "1");
                            df.set(userInfo);
                            startActivity(new Intent(getApplicationContext(),Admin.class));
                            finish();

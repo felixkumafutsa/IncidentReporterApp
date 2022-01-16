@@ -32,19 +32,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:text="Welcome to Incident Reporter"
+                android:text="Incident Reporter"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="A convenient way to report emergencies"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <ProgressBar

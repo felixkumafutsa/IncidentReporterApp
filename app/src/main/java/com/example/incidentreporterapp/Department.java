@@ -20,6 +20,7 @@ public class Department extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     List<IncidentsModelClass> incidentsList;
     IncidentsAdapter incidentsAdapter;
+    private TeamsAdapter.RecyclerViewClickListener incidentListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +64,18 @@ public class Department extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        incidentsAdapter = new IncidentsAdapter(incidentsList);
+        incidentsAdapter = new IncidentsAdapter(incidentsList, (IncidentsAdapter.RecyclerViewClickListener) incidentListener);
         recyclerView.setAdapter(incidentsAdapter);
         incidentsAdapter.notifyDataSetChanged();
+    }
+
+    private void setOnClickListener() {
+        incidentListener = new TeamsAdapter.RecyclerViewClickListener(){
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), Admin.class);
+                startActivity(intent);
+            }
+        };
     }
 }

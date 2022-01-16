@@ -1,18 +1,12 @@
-
-
-
-
-
-
-
-
 package com.example.incidentreporterapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Adapter;
 
 import java.util.ArrayList;
@@ -23,10 +17,11 @@ public class Teams extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     List<TeamsModelClass> teamsList;
     TeamsAdapter teamsAdapter;
+    private  TeamsAdapter.RecyclerViewClickListener teamListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_incidents);
+        setContentView(R.layout.activity_teams);
 
         initData();
         initRecyclerView();
@@ -40,12 +35,23 @@ public class Teams extends AppCompatActivity {
           }
 
     private void initRecyclerView() {
-        recyclerView = findViewById(R.id.incidentsRecycler);
+        setOnClickListener();
+        recyclerView = findViewById(R.id.teamsRecycler);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        teamsAdapter = new TeamsAdapter(teamsList);
+        teamsAdapter = new TeamsAdapter(teamsList, teamListener);
         recyclerView.setAdapter(teamsAdapter);
         teamsAdapter.notifyDataSetChanged();
+    }
+
+    private void setOnClickListener() {
+        teamListener = new TeamsAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(), Department.class);
+                startActivity(intent);
+            }
+        };
     }
 }

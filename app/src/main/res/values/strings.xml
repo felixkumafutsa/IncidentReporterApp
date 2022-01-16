@@ -11,6 +11,14 @@
         <item>There is fire here</item>
         <item>There is a road accident</item>
     </string-array>
+    <string-array name="phoneNumber_array">
+        <item>0997473256</item>
+        <item>0991764917</item>
+        <item>0997473256</item>
+
+    </string-array>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="quick_voice_call">Quick voice call</string>
+    <string name="title_activity_incidents_map">IncidentsMap</string>
+    <string name="responce_teams">Responce Teams</string>
 </resources>

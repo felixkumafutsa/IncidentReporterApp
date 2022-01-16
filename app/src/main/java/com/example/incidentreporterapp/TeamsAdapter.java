@@ -15,9 +15,11 @@ import java.util.List;
 public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.ViewHolder> {
 
     private List<TeamsModelClass> teamsList;
+    private RecyclerViewClickListener teamListener;
 
-    public TeamsAdapter(List<TeamsModelClass> teamsList){
+    public TeamsAdapter(List<TeamsModelClass> teamsList, RecyclerViewClickListener teamListener){
         this.teamsList = teamsList;
+        this.teamListener = teamListener;
     }
 
     @NonNull
@@ -42,8 +44,11 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.ViewHolder> 
     public int getItemCount() {
         return teamsList.size();
     }
+    public interface RecyclerViewClickListener{
+        void onClick(View v, int position);
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageView;
         private TextView textView, textView1,textView2;
 
@@ -54,6 +59,8 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.ViewHolder> 
             textView1 = itemView.findViewById(R.id.email);
             textView2 = itemView.findViewById(R.id.phone);
 
+            itemView.setOnClickListener(this);
+
         }
 
         public void setData(int imgResource, String teamName, String emailAddress, String phoneNumber) {
@@ -61,6 +68,11 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.ViewHolder> 
             textView.setText(teamName);
             textView1.setText(phoneNumber);
             textView2.setText(emailAddress);
+        }
+
+        @Override
+        public void onClick(View v) {
+            teamListener.onClick(v, getAdapterPosition());
         }
     }
 }
