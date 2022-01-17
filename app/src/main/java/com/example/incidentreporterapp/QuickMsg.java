@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +30,14 @@ public class QuickMsg extends AppCompatActivity {
     private Spinner message;
     private Spinner phone;
     private Button sendPanicSituation;
+    boolean valid = true;
+    private DatabaseReference databaseIncident;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_msg);
+
+        databaseIncident = FirebaseDatabase.getInstance().getReference("incidents");
 
         message = findViewById(R.id.messageSpiner);
         department = findViewById(R.id.departmentSpinner);
@@ -44,6 +51,15 @@ public class QuickMsg extends AppCompatActivity {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                     if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
                         sendSms();
+                        checkField(message);
+
+                        if(valid){
+                            String msg = message.getSelectedItem().toString().trim();
+                            String id = databaseIncident.push().getKey();
+                            Incident incident = new Incident(id,msg);
+                            databaseIncident.child(id).setValue(incident);
+
+                        }
                     }
                     else{
                         requestPermissions(new String[]{Manifest.permission.SEND_SMS},1);
@@ -87,5 +103,14 @@ public class QuickMsg extends AppCompatActivity {
             Toast.makeText(this,"Failed to send text",Toast.LENGTH_SHORT).show();
         }
     }
+    public boolean checkField(Spinner textField){
+        if(textField.getSelectedItem().toString().isEmpty()){
 
+            valid = false;
+        }else {
+            valid = true;
+        }
+
+        return valid;
+    }
 }

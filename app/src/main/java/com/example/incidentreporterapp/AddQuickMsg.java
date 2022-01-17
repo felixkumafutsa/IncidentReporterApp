@@ -25,7 +25,7 @@ public class AddQuickMsg extends AppCompatActivity {
     EditText fullMsg;
     Button addBtn,gotoDashboard;
     boolean valid = true;
-    FirebaseAuth firebaseAuth;
+
     FirebaseFirestore firebaseFirestore;
 
     @Override
@@ -33,7 +33,6 @@ public class AddQuickMsg extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_quick_msg);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         fullMsg = findViewById(R.id.fullMsg);
@@ -46,13 +45,7 @@ public class AddQuickMsg extends AppCompatActivity {
                 checkField(fullMsg);
 
                 if(valid){
-                            DocumentReference df = firebaseFirestore.collection("Users").document(fullMsg.toString());
-                            Toast.makeText(AddQuickMsg.this, "created", Toast.LENGTH_SHORT).show();
-                            Map<String, Object> msgInfo = new HashMap<>();
-                            msgInfo.put("FullName", fullMsg.getText().toString());
-                            df.set(msgInfo);
-                            startActivity(new Intent(getApplicationContext(),Admin.class));
-                            finish();
+
 
                 }
             }
