@@ -2,12 +2,16 @@ package com.example.incidentreporterapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -30,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 import io.grpc.Context;
@@ -42,6 +48,7 @@ public class ReportIncident extends AppCompatActivity {
     private Button sendReport;
     boolean valid = true;
     private DatabaseReference databaseIncident;
+    String currentPhotoPath;
     private FirebaseStorage storage;
     private StorageReference storageReference;
     @Override
@@ -58,7 +65,8 @@ public class ReportIncident extends AppCompatActivity {
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                captureImage();
+                dispatchTakePictureIntent();
+                sendSms();
             }
         });
 
@@ -90,20 +98,46 @@ public class ReportIncident extends AppCompatActivity {
             }
         });
     }
-    public void captureImage(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,0);
-    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        if (resultCode == RESULT_OK){
-            Bitmap b = (Bitmap)data.getExtras().get("data");
-            imgCaptured.setImageBitmap(b);
-            uploadPicture();
+        if (resultCode == Activity.RESULT_OK){
+            File f = new File(currentPhotoPath);
+            imgCaptured.setImageURI(Uri.fromFile(f));
+
         }
     }
 
-    private void uploadPicture() {
+    private  File createImageFile() throws IOException{
+        String timeStamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format( new Date());
+        String imageFileName ="JPEG" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+
+    }
+
+    private void dispatchTakePictureIntent(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(takePictureIntent.resolveActivity(getPackageManager()) != null){
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            }
+            catch (Exception exception){
+
+            }
+            if(photoFile != null){
+                Uri photoUri = FileProvider.getUriForFile(this,"com.example.incidentreporterapp.android.fileProvider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(takePictureIntent, RESULT_OK);
+            }
+        }
+
+    }
+
+    /*private void uploadPicture() {
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Uploading picture.....");
         pd.show();
@@ -131,7 +165,7 @@ public class ReportIncident extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
     private void sendSms(){
         String phoneNumber = department.getSelectedItem().toString().trim();
