@@ -21,9 +21,10 @@
 
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:scaleType="centerCrop"
                 android:backgroundTint="@color/white"
                 android:src="@drawable/icon" />
 
@@ -34,7 +35,7 @@
                 android:layout_marginTop="15dp"
                 android:text="Incident Reporter"
                 android:textColor="@color/primaryTextColor"
-                android:textSize="20sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textStyle="bold" />
 
             <ProgressBar

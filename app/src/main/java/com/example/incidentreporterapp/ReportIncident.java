@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,10 +63,17 @@ public class ReportIncident extends AppCompatActivity {
 
         imgCaptured = findViewById(R.id.imgCaptured);
         captureButton = findViewById(R.id.captureButton);
+        sendReport = findViewById(R.id.sendReport);
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+            }
+        });
+
+        sendReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 sendSms();
             }
         });
@@ -104,8 +112,46 @@ public class ReportIncident extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK){
             File f = new File(currentPhotoPath);
             imgCaptured.setImageURI(Uri.fromFile(f));
+            Log.d("TAG", "Uri is " + Uri.fromFile(f));
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri contentUri = Uri.fromFile(f);
+            mediaScanIntent.setData(contentUri);
+            this.sendBroadcast(mediaScanIntent);
 
+            uploadImage(f.getName(), contentUri);
         }
+    }
+
+    private void uploadImage(String name, Uri contentUri) {
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setTitle("Uploading picture.....");
+        pd.show();
+        StorageReference image = storageReference.child("images/" + name);
+        image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(@NonNull Uri uri) {
+                        Log.d("tag","onsuccess: image uri is " + uri.toString());
+                    }
+                });
+                pd.dismiss();
+                Snackbar.make(findViewById(R.id.content), "Image uploaded", Snackbar.LENGTH_SHORT ).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                pd.dismiss();
+                Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                pd.setMessage("Progress :" + (int) progressPercent+ "%");
+            }
+        });
     }
 
     private  File createImageFile() throws IOException{
@@ -129,43 +175,13 @@ public class ReportIncident extends AppCompatActivity {
 
             }
             if(photoFile != null){
-                Uri photoUri = FileProvider.getUriForFile(this,"com.example.incidentreporterapp.android.fileProvider", photoFile);
+                Uri photoUri = FileProvider.getUriForFile(this,"com.incidentreporterapp.fileprovider", photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, RESULT_OK);
             }
         }
 
     }
-
-    /*private void uploadPicture() {
-        final ProgressDialog pd = new ProgressDialog(this);
-        pd.setTitle("Uploading picture.....");
-        pd.show();
-        final  String randomKey = UUID.randomUUID().toString();
-        Uri file = Uri.fromFile(new File("path/to/images/imageCaptured"));
-        StorageReference riversRef = storageReference.child("images/"+file.getLastPathSegment());
-        
-        riversRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
-                Snackbar.make(findViewById(R.id.content), "Image uploaded", Snackbar.LENGTH_SHORT ).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                pd.dismiss();
-                Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                pd.setMessage("Progress :" + (int) progressPercent+ "%");
-            }
-        });
-
-    }*/
 
     private void sendSms(){
         String phoneNumber = department.getSelectedItem().toString().trim();

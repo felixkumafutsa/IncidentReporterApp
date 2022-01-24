@@ -27,8 +27,8 @@ import java.util.List;
 
 public class QuickMsg extends AppCompatActivity {
     private Spinner department;
-    private Spinner message;
     private Spinner phone;
+    private String message;
     private Button sendPanicSituation;
     boolean valid = true;
     private DatabaseReference databaseIncident;
@@ -39,7 +39,7 @@ public class QuickMsg extends AppCompatActivity {
 
         databaseIncident = FirebaseDatabase.getInstance().getReference("incidents");
 
-        message = findViewById(R.id.messageSpiner);
+        message = "Help, there is an emergence";
         department = findViewById(R.id.departmentSpinner);
         phone = findViewById(R.id.phoneSpinner);
         sendPanicSituation = findViewById(R.id.sendPanic);
@@ -54,7 +54,7 @@ public class QuickMsg extends AppCompatActivity {
                         checkField(message);
 
                         if(valid){
-                            String msg = message.getSelectedItem().toString().trim();
+                            String msg = message.trim();
                             String id = databaseIncident.push().getKey();
                             Incident incident = new Incident(id,msg);
                             databaseIncident.child(id).setValue(incident);
@@ -67,12 +67,6 @@ public class QuickMsg extends AppCompatActivity {
                 }
             }
         });
-
-        Spinner spinnerMessage = (Spinner) findViewById(R.id.messageSpiner);
-        ArrayAdapter<CharSequence> adapterMessage = ArrayAdapter.createFromResource(this,
-                R.array.messages_array, android.R.layout.simple_spinner_item);
-        adapterMessage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMessage.setAdapter(adapterMessage);
 
 
         Spinner spinnerDepartment = (Spinner) findViewById(R.id.departmentSpinner);
@@ -92,7 +86,7 @@ public class QuickMsg extends AppCompatActivity {
 
     private void sendSms(){
         String phoneNumber = department.getSelectedItem().toString().trim();
-        String SMS = message.getSelectedItem().toString().trim();
+        String SMS = message.trim();
 
         try {
             SmsManager smsManager = SmsManager.getDefault();
@@ -103,8 +97,8 @@ public class QuickMsg extends AppCompatActivity {
             Toast.makeText(this,"Failed to send text",Toast.LENGTH_SHORT).show();
         }
     }
-    public boolean checkField(Spinner textField){
-        if(textField.getSelectedItem().toString().isEmpty()){
+    public boolean checkField(String textField){
+        if(textField.isEmpty()){
 
             valid = false;
         }else {

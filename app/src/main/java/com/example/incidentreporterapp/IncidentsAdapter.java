@@ -10,66 +10,43 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
 import java.util.List;
 
-public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.ViewHolder> {
+public class IncidentsAdapter extends FirestoreRecyclerAdapter<IncidentModelClass, IncidentsAdapter.IncidentHolder> {
+    public IncidentsAdapter(@NonNull FirestoreRecyclerOptions<IncidentModelClass> options) {
+        super(options);
+    }
 
-    private List<IncidentsModelClass> incidentsList;
-    private RecyclerViewClickListener incidentListener;
-    public IncidentsAdapter(List<IncidentsModelClass> incidentsList, RecyclerViewClickListener incidentListener){
-        this.incidentsList = incidentsList;
-        this.incidentListener = incidentListener;
+    @Override
+    protected void onBindViewHolder(@NonNull IncidentHolder holder, int position, @NonNull IncidentModelClass model) {
+        holder.incidentImage.setImageResource(model.getIncidentImage());
+        holder.incidentDescription.setText(model.incidentDescription);
+        holder.latitude.setText(model.getIncidentLatitude());
+        holder.longitude.setText(model.getIncidentLongitude());
     }
 
     @NonNull
     @Override
-    public IncidentsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.incident_layout,parent,false);
-        return new ViewHolder(view);
+    public IncidentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.incident_layout, parent, false);
+        return new IncidentHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull IncidentsAdapter.ViewHolder holder, int position) {
-        int imgResource = incidentsList.get(position).getIncidentIm();
-        String description = incidentsList.get(position).getIncidentDescription();
-        String lat = incidentsList.get(position).getLatitude();
-        String lon = incidentsList.get(position).getLongitude();
+    class IncidentHolder extends RecyclerView.ViewHolder{
+        ImageView incidentImage;
+        TextView incidentDescription;
+        TextView latitude;
+        TextView longitude;
 
-
-        holder.setData(imgResource, description, lat, lon);
-    }
-
-    @Override
-    public int getItemCount() {
-        return incidentsList.size();
-    }
-    public interface RecyclerViewClickListener{
-        void onClick(View v, int position);
-    }
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private ImageView imageView;
-        private TextView textView, textView1,textView2;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.IncidentImage);
-            textView = itemView.findViewById(R.id.title);
-            textView1 = itemView.findViewById(R.id.latitude);
-            textView2 = itemView.findViewById(R.id.longitude);
-
-            itemView.setOnClickListener(this);
-
-        }
-
-        public void setData(int imgResource, String description, String lat, String lon) {
-            imageView.setImageResource(imgResource);
-            textView.setText(description);
-            textView1.setText(lat);
-            textView2.setText(lon);
-        }
-        @Override
-        public void onClick(View v) {
-            incidentListener.onClick(v, getAdapterPosition());
-        }
-    }
+      public IncidentHolder(@NonNull View itemView) {
+          super(itemView);
+          incidentImage = itemView.findViewById(R.id.incidentImage);
+          incidentDescription = itemView.findViewById(R.id.incidentDescription);
+          latitude= itemView.findViewById(R.id.latitude);
+          longitude= itemView.findViewById(R.id.longitude);
+      }
+  }
 }

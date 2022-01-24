@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.incidentreporterapp">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.incidentreporterapp"
+    android:versionCode="1"
+    android:versionName="1.0" >
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -22,7 +25,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IncidentReporterApp">
+        android:theme="@style/Theme.IncidentReporterApp"
+        tools:replace="android:allowBackup,icon,theme,label">
         <activity
             android:name=".QuickMessages"
             android:exported="true" />
@@ -89,13 +93,13 @@
         </activity>
 
         <provider
-            android:authorities="com.example.incidentreporterapp.android.fileProvider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.incidentreporterapp.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
-                android:name=""
-                android:resource="@xml/file_paths"/>
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 

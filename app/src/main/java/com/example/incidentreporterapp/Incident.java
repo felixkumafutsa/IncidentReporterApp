@@ -4,7 +4,7 @@ public class Incident {
     String incidentId;
     String incidentContent;
     public Incident(){
-
+        //needed empty constructor
     }
 
     public Incident(String incidentId, String incidentContent) {

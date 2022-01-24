@@ -9,52 +9,45 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Incidents extends AppCompatActivity {
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    List<IncidentsModelClass> incidentsList;
-    IncidentsAdapter incidentsAdapter;
-    private  IncidentsAdapter.RecyclerViewClickListener listener;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference incidentRef = db.collection("incidents");
+    private IncidentsAdapter incidentsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_incidents);
+        setRecyclerView();
 
-        initData();
-        initRecyclerView();
     }
 
-    private void initData() {
-        incidentsList = new ArrayList<>();
-        incidentsList.add(new IncidentsModelClass(R.drawable.communicate_40px,"Fire","ddddddd","ddddddd"));
-        incidentsList.add(new IncidentsModelClass(R.drawable.communicate_40px,"Domestic Violence","ddddddd","ddddddd"));
-        incidentsList.add(new IncidentsModelClass(R.drawable.communicate_40px,"Robbery","ddddddd","ddddddd"));
-        incidentsList.add(new IncidentsModelClass(R.drawable.communicate_40px,"ddddddd","ddddddd","ddddddd"));
-        incidentsList.add(new IncidentsModelClass(R.drawable.communicate_40px,"ddddddd","ddddddd","ddddddd"));
-        incidentsList.add(new IncidentsModelClass(R.drawable.communicate_40px,"ddddddd","ddddddd","ddddddd"));
-        incidentsList.add(new IncidentsModelClass(R.drawable.communicate_40px,"ddddddd","ddddddd","ddddddd"));
-    }
-
-    private void initRecyclerView() {
-        recyclerView = findViewById(R.id.incidentsRecycler);
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        incidentsAdapter = new IncidentsAdapter(incidentsList, listener);
+    private void setRecyclerView() {
+        Query query = incidentRef.limit(100);
+        FirestoreRecyclerOptions<IncidentModelClass> options = new FirestoreRecyclerOptions.Builder<IncidentModelClass>().setQuery(query, IncidentModelClass.class).build();
+        incidentsAdapter = new IncidentsAdapter(options);
+        RecyclerView recyclerView = findViewById(R.id.incidentsRecycler);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(incidentsAdapter);
-        incidentsAdapter.notifyDataSetChanged();
     }
 
-    private void setOnClickListener() {
-        listener = new IncidentsAdapter.RecyclerViewClickListener(){
-            @Override
-            public void onClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(), Department.class);
-                startActivity(intent);
-            }
-        };
+    @Override
+    protected void onStart() {
+        super.onStart();
+        incidentsAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        incidentsAdapter.stopListening();
     }
 }
