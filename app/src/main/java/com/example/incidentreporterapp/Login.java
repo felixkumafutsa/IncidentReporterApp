@@ -85,7 +85,7 @@ public class Login extends AppCompatActivity {
                     finish();
                 }
                 if (documentSnapshot.getString("isUser") != null){
-                    startActivity(new Intent(getApplicationContext(),Department.class));
+                    startActivity(new Intent(getApplicationContext(),Incidents.class));
                     finish();
                 }
             }

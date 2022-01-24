@@ -129,7 +129,7 @@
             android:padding="5dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/incidentsRecycler1"
+                android:id="@+id/incidentRecycler1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"></androidx.recyclerview.widget.RecyclerView>

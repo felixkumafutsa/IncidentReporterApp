@@ -49,7 +49,7 @@ public class Teams extends AppCompatActivity {
         teamListener = new TeamsAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(), Department.class);
+                Intent intent = new Intent(getApplicationContext(), Incidents.class);
                 startActivity(intent);
             }
         };

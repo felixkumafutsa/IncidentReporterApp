@@ -21,7 +21,7 @@ import java.util.List;
 public class Incidents extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference incidentRef = db.collection("incidents");
-    private IncidentsAdapter incidentsAdapter;
+    private IncidentAdapter incidentAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,23 +31,24 @@ public class Incidents extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        Query query = incidentRef.limit(100);
-        FirestoreRecyclerOptions<IncidentModelClass> options = new FirestoreRecyclerOptions.Builder<IncidentModelClass>().setQuery(query, IncidentModelClass.class).build();
-        incidentsAdapter = new IncidentsAdapter(options);
+        Query query = incidentRef.orderBy("timestamp").limit(50);
+        FirestoreRecyclerOptions<IncidentModel> options = new FirestoreRecyclerOptions.Builder<IncidentModel>().setQuery(query, IncidentModel.class).build();
+        incidentAdapter = new IncidentAdapter(options);
         RecyclerView recyclerView = findViewById(R.id.incidentsRecycler);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(incidentsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(incidentAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        incidentsAdapter.startListening();
+        incidentAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        incidentsAdapter.stopListening();
+        incidentAdapter.stopListening();
     }
 }
