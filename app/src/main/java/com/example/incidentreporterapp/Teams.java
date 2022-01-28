@@ -9,49 +9,46 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Adapter;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Teams extends AppCompatActivity {
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    List<TeamsModelClass> teamsList;
-    TeamsAdapter teamsAdapter;
-    private  TeamsAdapter.RecyclerViewClickListener teamListener;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference teamRef = db.collection("users");
+    private TeamsAdapter teamsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams);
+        setRecyclerView();
 
-        initData();
-        initRecyclerView();
     }
 
-    private void initData() {
-        teamsList = new ArrayList<>();
-        teamsList.add(new TeamsModelClass(R.drawable.communicate_40px,"Fire Brigade","fire@fire.net","0997576478"));
-        teamsList.add(new TeamsModelClass(R.drawable.communicate_40px,"MASM","masm@ealt.com","08857674688"));
-        teamsList.add(new TeamsModelClass(R.drawable.communicate_40px,"POLICE","mwpolice@s.mw","0998764784"));
-          }
-
-    private void initRecyclerView() {
-        setOnClickListener();
-        recyclerView = findViewById(R.id.teamsRecycler);
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        teamsAdapter = new TeamsAdapter(teamsList, teamListener);
+    private void setRecyclerView() {
+        Query query = teamRef.orderBy("timestamp").limit(50);
+        FirestoreRecyclerOptions<TeamsModelClass> options = new FirestoreRecyclerOptions.Builder<TeamsModelClass>().setQuery(query, TeamsModelClass.class).build();
+        teamsAdapter = new TeamsAdapter(options);
+        RecyclerView recyclerView = findViewById(R.id.teamsRecycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(teamsAdapter);
-        teamsAdapter.notifyDataSetChanged();
     }
 
-    private void setOnClickListener() {
-        teamListener = new TeamsAdapter.RecyclerViewClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(), Incidents.class);
-                startActivity(intent);
-            }
-        };
+    @Override
+    protected void onStart() {
+        super.onStart();
+       teamsAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        teamsAdapter.stopListening();
     }
 }

@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -45,8 +46,7 @@ public class AddQuickMsg extends AppCompatActivity {
                 checkField(fullMsg);
 
                 if(valid){
-
-
+                    saveQuickMessage();
                 }
             }
         });
@@ -56,6 +56,16 @@ public class AddQuickMsg extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),Admin.class));
             }
         });
+    }
+
+    public void saveQuickMessage(){
+        String content = fullMsg.getText().toString().trim();
+        if(content.isEmpty()){
+            Toast.makeText(this, "Can not accept empty input", Toast.LENGTH_SHORT).show();
+        }
+        CollectionReference quickMsgRef = FirebaseFirestore.getInstance().collection("quickmessages");
+        quickMsgRef.add(new QuickMessageModel(content));
+        Toast.makeText(this, "Added seccessfully", Toast.LENGTH_SHORT).show();
     }
 
     public boolean checkField(EditText textField){
