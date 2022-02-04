@@ -35,7 +35,7 @@ public class Home extends AppCompatActivity {
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Home.this, QuickMsg.class));
+                startActivity(new Intent(Home.this, Spinners.class));
             }
         });
 

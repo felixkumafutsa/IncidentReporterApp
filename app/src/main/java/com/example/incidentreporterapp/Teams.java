@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Teams extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference teamRef = db.collection("users");
+    private CollectionReference teamRef = db.collection("Users");
     private TeamsAdapter teamsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class Teams extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        Query query = teamRef.orderBy("timestamp").limit(50);
+        Query query = teamRef.orderBy("FullName").limit(50);
         FirestoreRecyclerOptions<TeamsModelClass> options = new FirestoreRecyclerOptions.Builder<TeamsModelClass>().setQuery(query, TeamsModelClass.class).build();
         teamsAdapter = new TeamsAdapter(options);
         RecyclerView recyclerView = findViewById(R.id.teamsRecycler);

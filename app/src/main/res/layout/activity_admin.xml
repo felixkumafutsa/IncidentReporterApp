@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Add Team"
+                        android:text="Add User"
                         android:textColor="@color/black"
                         android:textSize="13dp" />
 
@@ -213,7 +213,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Responce Teams"
+                                android:text="Users"
                                 android:textColor="@color/black"
                                 android:textSize="13dp" />
 
@@ -299,6 +299,7 @@
 
                     </androidx.cardview.widget.CardView>
                 </GridLayout>
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonL"
                     style="@style/loginButton"
@@ -307,7 +308,7 @@
                     android:layout_gravity="center"
                     android:layout_marginVertical="30dp"
                     android:text="Logout" />
-             </LinearLayout>
+            </LinearLayout>
         </ScrollView>
     </LinearLayout>
 </RelativeLayout>

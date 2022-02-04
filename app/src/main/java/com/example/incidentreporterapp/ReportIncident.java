@@ -2,13 +2,18 @@ package com.example.incidentreporterapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.icu.text.SimpleDateFormat;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,7 +28,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.incidentreporterapp.databinding.ActivityIncidentsMapBinding;
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -52,6 +60,16 @@ public class ReportIncident extends AppCompatActivity {
     String currentPhotoPath;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+
+    GoogleMap mMap;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private LatLng latLng;
+    private  final  long MIN_TIME = 1000;
+    private final long MAX_DIST = 5;
+
+    private ActivityIncidentsMapBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

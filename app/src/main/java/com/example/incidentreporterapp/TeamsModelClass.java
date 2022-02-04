@@ -9,7 +9,8 @@ public class TeamsModelClass {
         this.phoneNumber = phoneNumber;
     }
 
-
+    public TeamsModelClass() {
+    }
 
     public String getTeamName() {
         return teamName;

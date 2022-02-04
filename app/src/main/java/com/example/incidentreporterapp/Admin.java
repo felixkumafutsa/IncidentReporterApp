@@ -69,13 +69,13 @@ public class Admin extends AppCompatActivity {
         imageButton5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Admin.this,QuickMessages.class));
+                startActivity(new Intent(Admin.this,IncidentsMap.class));
             }
         });
         imageButton6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Admin.this,AddQuickMsg.class));
+                startActivity(new Intent(Admin.this,IncidentsOverview.class));
             }
         });
         buttonL.setOnClickListener(new View.OnClickListener() {

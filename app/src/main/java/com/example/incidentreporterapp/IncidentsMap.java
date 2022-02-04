@@ -23,10 +23,6 @@ import com.example.incidentreporterapp.databinding.ActivityIncidentsMapBinding;
 
 
 public class IncidentsMap extends FragmentActivity implements OnMapReadyCallback {
-
-    private
-
-
     GoogleMap mMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
