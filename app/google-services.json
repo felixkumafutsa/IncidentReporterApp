@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "433724252322",
-    "project_id": "incident-reporter-e816d",
-    "storage_bucket": "incident-reporter-e816d.appspot.com"
+    "project_number": "745254036278",
+    "firebase_url": "https://incidentreporterapp-f9b7a-default-rtdb.firebaseio.com",
+    "project_id": "incidentreporterapp-f9b7a",
+    "storage_bucket": "incidentreporterapp-f9b7a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:433724252322:android:8617ebf3e08ec6b55ab7fb",
+        "mobilesdk_app_id": "1:745254036278:android:1bfd52681e7c690cc54997",
         "android_client_info": {
           "package_name": "com.example.incidentreporterapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "433724252322-3f2i49o76d6f769279rhaj195v8q69o0.apps.googleusercontent.com",
+          "client_id": "745254036278-2tm8jrs1qhe7aupkq449gjsuigtdmohu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDrBHHNtPEFhLkyVlYZEtmSl1hmNOSLYHA"
+          "current_key": "AIzaSyDOfM9UjooHDL8q7M8AV48Ndu_AA-pj5kY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "433724252322-3f2i49o76d6f769279rhaj195v8q69o0.apps.googleusercontent.com",
+              "client_id": "745254036278-2tm8jrs1qhe7aupkq449gjsuigtdmohu.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

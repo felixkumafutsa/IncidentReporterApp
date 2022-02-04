@@ -96,9 +96,9 @@ public class IncidentsMap extends FragmentActivity implements OnMapReadyCallback
 
             }
         };
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        try {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MAX_DIST, locationListener);
+          locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            try {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MAX_DIST, locationListener);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MAX_DIST, locationListener);
         }
         catch (SecurityException exception){
