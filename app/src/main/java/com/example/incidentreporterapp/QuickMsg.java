@@ -145,7 +145,7 @@ public class QuickMsg extends AppCompatActivity {
         String myLat = String.valueOf(latLng.latitude);
         String myLon  = String.valueOf(latLng.longitude);
         String phoneNumber = department.getSelectedItem().toString().trim();
-        String SMS = message.trim() + "http://maps.google.com/?q=" + myLat+ "," + myLon ;
+        String SMS = message.trim() + " http://maps.google.com/?q=-11.41988454439096,33.99534525947592";
 
         try {
             SmsManager smsManager = SmsManager.getDefault();
