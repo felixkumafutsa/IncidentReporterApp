@@ -65,8 +65,7 @@ public class QuickMsg extends AppCompatActivity {
 
         message = "Help me!, it's an emergency\n please reach ASAP to the location below\n   ";
         department = findViewById(R.id.departmentSpinner);
-        phone = findViewById(R.id.phoneSpinner);
-        sendPanicSituation = findViewById(R.id.sendPanic);
+           sendPanicSituation = findViewById(R.id.sendPanic);
         String  [] departmentos = {"FIRE", "MASM","POLICE"};
         String firePhone = "0997473256";
         String masmPhone = "0991764917";
@@ -76,11 +75,7 @@ public class QuickMsg extends AppCompatActivity {
                 R.array.departments_array, android.R.layout.simple_spinner_item);
         adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDepartment.setAdapter(adapterDepartment);
-        Spinner spinnerPhone = (Spinner) findViewById(R.id.phoneSpinner);
-        ArrayAdapter<CharSequence> adapterPhone = ArrayAdapter.createFromResource(this,
-                R.array.phoneNumber_array, android.R.layout.simple_spinner_item);
-        adapterDepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDepartment.setAdapter(adapterPhone);
+
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},PackageManager.PERMISSION_GRANTED);
 
