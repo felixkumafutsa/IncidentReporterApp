@@ -39,6 +39,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class QuickMsg extends AppCompatActivity {
@@ -66,10 +67,20 @@ public class QuickMsg extends AppCompatActivity {
         message = "Help me!, it's an emergency\n please reach ASAP to the location below\n   ";
         department = findViewById(R.id.departmentSpinner);
            sendPanicSituation = findViewById(R.id.sendPanic);
-        String  [] departmentos = {"FIRE", "MASM","POLICE"};
+       /* String  []  = {"FIRE", "MASM","POLICE"};
         String firePhone = "0997473256";
         String masmPhone = "0991764917";
-        String policePhone = "0991764917";
+        String policePhone = "0991764917";*/
+
+        HashMap<String, String> departments = new HashMap<String, String>();
+
+        // Add keys and values (Country, City)
+        departments.put("FIRE", "0997473256");
+        departments.put("MASM", "0991764917");
+        departments.put("POLICE", "0991764917");
+
+
+
         Spinner spinnerDepartment = (Spinner) findViewById(R.id.departmentSpinner);
         ArrayAdapter<CharSequence> adapterDepartment = ArrayAdapter.createFromResource(this,
                 R.array.departments_array, android.R.layout.simple_spinner_item);

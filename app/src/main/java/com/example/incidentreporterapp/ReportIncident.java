@@ -1,25 +1,16 @@
 package com.example.incidentreporterapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
-
 import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.icu.text.SimpleDateFormat;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,26 +19,19 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.incidentreporterapp.databinding.ActivityIncidentsMapBinding;
-import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-import java.util.UUID;
-
-import io.grpc.Context;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReportIncident extends AppCompatActivity {
     ImageView imgCaptured;
@@ -56,18 +40,13 @@ public class ReportIncident extends AppCompatActivity {
     private EditText message;
     private Button sendReport;
     boolean valid = true;
-    private DatabaseReference databaseIncident;
-    String currentPhotoPath;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
-
+    FirebaseFirestore firebaseFirestore;
     GoogleMap mMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private LatLng latLng;
     private  final  long MIN_TIME = 1000;
     private final long MAX_DIST = 5;
-
     private ActivityIncidentsMapBinding binding;
 
     @Override
@@ -75,26 +54,22 @@ public class ReportIncident extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_incident);
 
-        databaseIncident = FirebaseDatabase.getInstance().getReference("incidents");
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         imgCaptured = findViewById(R.id.imgCaptured);
         captureButton = findViewById(R.id.captureButton);
         sendReport = findViewById(R.id.sendReport);
+        department = findViewById(R.id.departments_spinner);
+        message = findViewById(R.id.incidentDescription);
+        sendReport = findViewById(R.id.sendReport);
+
         captureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                captureImage();
             }
         });
 
-        sendReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendSms();
-            }
-        });
 
         Spinner spinner = (Spinner) findViewById(R.id.departments_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
@@ -105,105 +80,71 @@ public class ReportIncident extends AppCompatActivity {
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-
-        department = findViewById(R.id.departments_spinner);
-        message = findViewById(R.id.incidentDescription);
-        sendReport = findViewById(R.id.sendReport);
         sendReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkField(message);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED){
+                        sendSms();
+                        checkField(message);
 
-                if(valid){
-                    String msg = message.getText().toString().trim();
-                    String id = databaseIncident.push().getKey();
-                    Incident incident = new Incident(id,msg);
-                    databaseIncident.child(id).setValue(incident);
-
+                        if(valid){
+                            saveQuickMessage();
+                        }
+                    }
+                    else{
+                        requestPermissions(new String[]{Manifest.permission.SEND_SMS},1);
+                    }
                 }
             }
         });
     }
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
 
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                try {
+                    latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("My location"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                }
+                catch (Exception exception){
+                    exception.printStackTrace();
+                }
+
+            }
+        };
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MAX_DIST, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MAX_DIST, locationListener);
+        }
+        catch (SecurityException exception){
+            exception.printStackTrace();
+        }
+    }
+
+    public void captureImage(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,0);
+    }
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-        if (resultCode == Activity.RESULT_OK){
-            File f = new File(currentPhotoPath);
-            imgCaptured.setImageURI(Uri.fromFile(f));
-            Log.d("TAG", "Uri is " + Uri.fromFile(f));
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            Uri contentUri = Uri.fromFile(f);
-            mediaScanIntent.setData(contentUri);
-            this.sendBroadcast(mediaScanIntent);
-
-            uploadImage(f.getName(), contentUri);
+        if (resultCode == RESULT_OK){
+            Bitmap b = (Bitmap)data.getExtras().get("data");
+            imgCaptured.setImageBitmap(b);
         }
     }
-
-    private void uploadImage(String name, Uri contentUri) {
-        final ProgressDialog pd = new ProgressDialog(this);
-        pd.setTitle("Uploading picture.....");
-        pd.show();
-        StorageReference image = storageReference.child("images/" + name);
-        image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(@NonNull Uri uri) {
-                        Log.d("tag","onsuccess: image uri is " + uri.toString());
-                    }
-                });
-                pd.dismiss();
-                Snackbar.make(findViewById(R.id.content), "Image uploaded", Snackbar.LENGTH_SHORT ).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                pd.dismiss();
-                Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                pd.setMessage("Progress :" + (int) progressPercent+ "%");
-            }
-        });
-    }
-
-    private  File createImageFile() throws IOException{
-        String timeStamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format( new Date());
-        String imageFileName ="JPEG" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-
-    }
-
-    private void dispatchTakePictureIntent(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(takePictureIntent.resolveActivity(getPackageManager()) != null){
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            }
-            catch (Exception exception){
-
-            }
-            if(photoFile != null){
-                Uri photoUri = FileProvider.getUriForFile(this,"com.incidentreporterapp.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(takePictureIntent, RESULT_OK);
-            }
-        }
-
-    }
-
-    private void sendSms(){
+       private void sendSms(){
         String phoneNumber = department.getSelectedItem().toString().trim();
-        String SMS = message.getText().toString().trim();
+        String SMS = message.getText().toString().trim() + " http://maps.google.com/?q=-11.41988454439096,33.99534525947592";
 
         try {
             SmsManager smsManager = SmsManager.getDefault();
@@ -214,6 +155,24 @@ public class ReportIncident extends AppCompatActivity {
             Toast.makeText(this,"Failed to send text",Toast.LENGTH_SHORT).show();
         }
     }
+    public void saveQuickMessage(){
+        String content = message.getText().toString().trim();
+        String latitude = "-11.41988454439096";
+        String longitude = "33.99534525947592";
+        if(content.isEmpty()){
+            Toast.makeText(this, "Can not accept empty input", Toast.LENGTH_SHORT).show();
+        }
+        CollectionReference quickMsgRef = FirebaseFirestore.getInstance().collection("incidents");
+        Map<String, Object> incidentInfo = new HashMap<>();
+        incidentInfo.put("incidentDescription", content);
+        incidentInfo.put("incidentLatitude", latitude);
+        incidentInfo.put("incidentLongitude", longitude);
+        quickMsgRef.add(incidentInfo);
+
+    }
+
+
+
     public boolean checkField(EditText textField){
         if(textField.getText().toString().isEmpty()){
             textField.setError("Error");

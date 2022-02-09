@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/drawable/border.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_admin.xml" value="0.203125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_department.xml" value="0.18888888888888888" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_department_home.xml" value="0.20677083333333332" />
         <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_home.xml" value="0.203125" />
         <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_incidents_map.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/IncidentReporterApp/app/src/main/res/layout/activity_incidents_overview.xml" value="0.25" />

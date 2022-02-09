@@ -28,6 +28,9 @@
         android:theme="@style/Theme.IncidentReporterApp"
         tools:replace="android:allowBackup,icon,theme,label">
         <activity
+            android:name=".DepartmentHome"
+            android:exported="false" />
+        <activity
             android:name=".Spinners"
             android:exported="true" />
         <activity
@@ -70,10 +73,6 @@
         <activity
             android:name=".Admin"
             android:exported="true" />
-        <activity
-            android:name=".Department"
-            android:exported="true" />
-        <activity
             android:name=".ReportIncident"
             android:exported="true" />
         <activity

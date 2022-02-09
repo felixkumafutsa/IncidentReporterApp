@@ -50,14 +50,14 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/viewprofile"
             style="@style/loginButton"
-            android:layout_width="138dp"
+            android:layout_width="85dp"
             android:layout_height="27dp"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="11dp"
+            android:layout_marginRight="46dp"
             android:layout_toRightOf="@id/call"
-            android:text="view profile" />
+            android:text="profile" />
 
         <TextView
             android:id="@+id/phone"

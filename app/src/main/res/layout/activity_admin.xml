@@ -28,102 +28,6 @@
             android:text="Admin Dashboard"
             android:textColor="@color/colorAccent" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/addQuickMsgCard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/notificationCard"
-                android:background="@color/cardview_light_background"
-                app:cardCornerRadius="12dp"
-                app:elevation="60dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <ImageButton
-                        android:id="@+id/addTeamBtn"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="25dp"
-                        android:layout_marginBottom="5dp"
-                        android:backgroundTint="@color/white"
-                        android:clickable="true"
-                        android:src="@drawable/add_user_group_man_woman_35px" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Add User"
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/addTeamCard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/notificationCard"
-                android:background="@color/cardview_light_background"
-                app:cardCornerRadius="12dp"
-                app:elevation="60dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <ImageButton
-                        android:id="@+id/addQuickMs"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="25dp"
-                        android:layout_marginBottom="5dp"
-                        android:backgroundTint="@color/white"
-                        android:clickable="true"
-                        android:src="@drawable/new_message_35px" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Add Quick Msg "
-                        android:textColor="@color/black"
-                        android:textSize="13dp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-
-        </LinearLayout>
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -222,12 +126,13 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/quickMsgsCard"
+                        android:id="@+id/addQuickMsgCard"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
-                        android:layout_margin="12dp"
+                        android:layout_margin="10dp"
+                        android:layout_toRightOf="@+id/notificationCard"
                         android:background="@color/cardview_light_background"
                         app:cardCornerRadius="12dp"
                         app:elevation="60dp">
@@ -237,28 +142,32 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:orientation="vertical"
-                            android:padding="16dp">
+                            android:padding="10dp">
 
                             <ImageButton
-                                android:id="@+id/quickMsg"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_gravity="center"
+                                android:id="@+id/addTeamBtn"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="25dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginEnd="25dp"
+                                android:layout_marginBottom="5dp"
                                 android:backgroundTint="@color/white"
                                 android:clickable="true"
-                                android:src="@drawable/alarms_40px" />
+                                android:src="@drawable/add_user_group_man_woman_35px" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Quick msgs"
+                                android:text="Add User"
                                 android:textColor="@color/black"
                                 android:textSize="13dp" />
 
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
+
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/reportCArd"
