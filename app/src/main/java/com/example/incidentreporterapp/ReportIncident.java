@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.incidentreporterapp.databinding.ActivityIncidentsMapBinding;
@@ -27,9 +28,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,27 +55,29 @@ public class ReportIncident extends AppCompatActivity {
     private  final  long MIN_TIME = 1000;
     private final long MAX_DIST = 5;
     private ActivityIncidentsMapBinding binding;
-
+    private StorageReference storageRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_incident);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+        // Create a Cloud Storage reference from the app
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         imgCaptured = findViewById(R.id.imgCaptured);
-        captureButton = findViewById(R.id.captureButton);
         sendReport = findViewById(R.id.sendReport);
         department = findViewById(R.id.departments_spinner);
         message = findViewById(R.id.incidentDescription);
         sendReport = findViewById(R.id.sendReport);
 
-        captureButton.setOnClickListener(new View.OnClickListener() {
+        imgCaptured.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                captureImage();
+
             }
         });
+
 
 
         Spinner spinner = (Spinner) findViewById(R.id.departments_spinner);
@@ -102,10 +111,6 @@ public class ReportIncident extends AppCompatActivity {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         locationListener = new LocationListener() {
             @Override
@@ -131,17 +136,7 @@ public class ReportIncident extends AppCompatActivity {
         }
     }
 
-    public void captureImage(){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,0);
-    }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if (resultCode == RESULT_OK){
-            Bitmap b = (Bitmap)data.getExtras().get("data");
-            imgCaptured.setImageBitmap(b);
-        }
-    }
+
        private void sendSms(){
         String phoneNumber = department.getSelectedItem().toString().trim();
         String SMS = message.getText().toString().trim() + " http://maps.google.com/?q=-11.41988454439096,33.99534525947592";
@@ -183,4 +178,45 @@ public class ReportIncident extends AppCompatActivity {
 
         return valid;
     }
+
+    public void uploadImage(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,101);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if (resultCode == RESULT_OK){
+           if (requestCode == 101){
+                onCaptureImageResult(data);
+           }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void onCaptureImageResult(Intent data) {
+        Bitmap b = (Bitmap)data.getExtras().get("data");
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+        byte bb[] = byteArrayOutputStream.toByteArray();
+        imgCaptured.setImageBitmap(b);
+
+        uploadToFirebase(bb);
+    }
+
+    private void uploadToFirebase(byte []bb) {
+           StorageReference sr = storageRef.child("images/a.jpg");
+           sr.putBytes(bb).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+               @Override
+               public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                   Toast.makeText(ReportIncident.this, "successfully uploaded image to database", Toast.LENGTH_SHORT).show();
+               }
+           }).addOnFailureListener(new OnFailureListener() {
+               @Override
+               public void onFailure(@NonNull Exception e) {
+                   Toast.makeText(ReportIncident.this, "failed", Toast.LENGTH_SHORT).show();
+               }
+           });
+    }
+
 }
