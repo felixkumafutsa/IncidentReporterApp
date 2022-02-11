@@ -45,7 +45,7 @@
             android:layout_width="73dp"
             android:layout_height="27dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="67dp"
+            android:layout_marginLeft="81dp"
             android:layout_marginTop="70dp"
             android:layout_toRightOf="@id/incidentDescription"
             android:text="View" />
@@ -56,9 +56,9 @@
             android:layout_width="137dp"
             android:layout_height="27dp"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="51dp"
+            android:layout_marginLeft="44dp"
             android:layout_marginTop="70dp"
-            android:layout_marginRight="33dp"
+            android:layout_marginRight="48dp"
             android:layout_toRightOf="@id/view"
             android:text="On map" />
 
